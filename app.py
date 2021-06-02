@@ -158,7 +158,7 @@ def serve_layout():
         html.Div(id='save'),
     html.Div(id='output-data-upload'),
         html.Div(id='output-data-audio'),
-        html.Div(id = 'prediction'),
+        dcc.Loading(children = [html.Div(id = 'prediction')],type ='cube'),
 
                             html.Label(['Xeno-Canto.org ', 
                                 html.A('Lintujen äänitykset Suomessa ', href='https://www.xeno-canto.org/explore?query=area%3A%22europe%22+cnt%3A%22Finland')
