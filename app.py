@@ -174,7 +174,7 @@ def serve_layout():
                                 html.A('Wikipedia ', href='https://en.wikipedia.org/wiki/Mel-frequency_cepstrum')
                                ]),
                             html.Label(['Get from ', 
-                                html.A('GitHub', href='https://github.com/tuopouk/myfinanceai')
+                                html.A('GitHub', href='https://github.com/tuopouk/oiskotelkka')
                                ]),
                     html.Label(['by Tuomas Poukkula. ', 
                                 html.A('Follow on Twitter.', href='https://twitter.com/TuomasPoukkula')
