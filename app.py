@@ -6,20 +6,15 @@ import numpy as np
 import requests
 import plotly.graph_objs as go
 
-#from sklearn.linear_model import SGDRegressor, Lasso, Ridge, ElasticNet,BayesianRidge,PassiveAggressiveRegressor,LinearRegression
-#from sklearn.neural_network import MLPRegressor
-#from sklearn.neighbors import KNeighborsRegressor
 from sklearn.ensemble import  RandomForestClassifier
 import sklearn
-#from statsmodels.tsa.ar_model import AR
-#from sklearn.svm import SVR
-from sklearn.preprocessing import StandardScaler#,MinMaxScaler
-#from sklearn.metrics import mean_squared_error, mean_absolute_error,r2_score
+
+from sklearn.preprocessing import StandardScaler
 
 import json
 import random
 from datetime import datetime
-#from import tqdm
+
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -34,11 +29,10 @@ from dash.dependencies import Input, Output, State
 #from dash.exceptions import PreventUpdate
 from flask import Flask
 import os
-#import dash_daq as daq
+
 import base64
 import io
-#import pandas_datareader as web
-#from dash_extensions.enrich import Dash, ServersideOutput, Output, Input, State, Trigger
+
 
 import librosa
 
@@ -88,8 +82,8 @@ def update_output(content, filename):
 
 @app.callback(Output('output-data-audio', 'children'),
               Input('upload-data', 'contents'),
-              State('upload-data', 'filename'),
-              #State('upload-data', 'last_modified')
+              State('upload-data', 'filename')
+              
              )
 def update_audio(list_of_contents, filename):
     
@@ -100,8 +94,7 @@ def update_audio(list_of_contents, filename):
 
 @app.callback(Output('prediction', 'children'),
               Input('upload-data', 'contents'),
-              State('upload-data', 'filename'),
-              #State('upload-data', 'last_modified')
+              State('upload-data', 'filename')
              )
 def predict(contents,filename):
     
@@ -124,7 +117,7 @@ def predict(contents,filename):
                        fontFamily='Arial',
                        color = "blue"))
     except:
-        return 'Tiedoston pitää olla .wav-muotoinen.'
+        return 'Tiedosto ei ole .wav muotoinen tai on liian iso. Muunna .wav-tiedostoksi tai leikkaa sitä pienemmäksi.'
 
     
 
