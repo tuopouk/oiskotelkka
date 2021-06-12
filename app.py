@@ -43,7 +43,7 @@ server.secret_key = os.environ.get('secret_key','secret')
 app = dash.Dash(name = __name__, server = server,prevent_initial_callbacks=True)
 
 
-def features_extractor(file, n_mfcc = 20):
+def features_extractor(file, n_mfcc = 30):
     audio, sample_rate = librosa.load(file, res_type='kaiser_fast') 
     mfccs_features = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc = n_mfcc)
     mfccs_scaled_features = np.mean(mfccs_features.T,axis=0)
