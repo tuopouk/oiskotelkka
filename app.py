@@ -3,47 +3,43 @@
 
 import pandas as pd
 import numpy as np
-import requests
-import plotly.graph_objs as go
 
-from sklearn.ensemble import  RandomForestClassifier
-import sklearn
-
-from sklearn.preprocessing import StandardScaler
-
-import json
 import random
-from datetime import datetime
 
 import warnings
 warnings.filterwarnings('ignore')
 
-import math
-import time
 import pickle
 
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
-#from dash.exceptions import PreventUpdate
+
 from flask import Flask
 import os
 
 import base64
 import io
 
+#import tensorflow_cpu as tf
+from tensorflow.keras.models import load_model
 
 import librosa
 
 UPLOAD_DIRECTORY = "assets/"
+
+birds = pickle.load(open(UPLOAD_DIRECTORY+'names','rb'))
+model = load_model(UPLOAD_DIRECTORY+'dl_model.hdf5')
+scl = pickle.load(open(UPLOAD_DIRECTORY+'scaler_dl','rb'))
+
 
 server = Flask(__name__)
 server.secret_key = os.environ.get('secret_key','secret')
 app = dash.Dash(name = __name__, server = server,prevent_initial_callbacks=True)
 
 
-def features_extractor(file, n_mfcc = 10):
+def features_extractor(file, n_mfcc = 40):
     audio, sample_rate = librosa.load(file, res_type='kaiser_fast') 
     mfccs_features = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc = n_mfcc)
     mfccs_scaled_features = np.mean(mfccs_features.T,axis=0)
@@ -99,16 +95,14 @@ def update_audio(list_of_contents, filename):
 def predict(contents,filename):
     
     try:
-        features = pd.DataFrame(features_extractor('assets/'+filename)).T
+        features = pd.DataFrame(features_extractor(UPLOAD_DIRECTORY+filename)).T.values[0]
 
-        model = pickle.load(open('assets/model','rb'))
-        labelencoder = pickle.load(open('assets/labelencoder','rb'))
 
-        scl = pickle.load(open('assets/scaler','rb'))
+        X = scl.transform([features])
+        
+        prediction = birds.loc[model.predict_classes([X])].fin.values[0]
 
-        X = scl.transform(features)
-
-        prediction = labelencoder.inverse_transform(model.predict(X))[0].lower()
+        
 
         return html.P({0:'Oisko {}?'.format(prediction),
                 1:'Ehkä {}'.format(prediction),
