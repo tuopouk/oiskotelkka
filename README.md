@@ -8,3 +8,5 @@ I store the model, label encoder and scaler in pickled documents so this uses a 
 
 For those developing DL applications on Heroku, you should use tensorflow-cpu instead of tensorflow package due to limitations on Heroku slug size.
 
+You can check the app here: http://oiskotelkka.herokuapp.com/
+
